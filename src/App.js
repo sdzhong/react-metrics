@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/react';
 import logo from './logo.svg';
 import './App.css';
 
@@ -17,6 +18,16 @@ function App() {
         >
           Learn React
         </a>
+        <button onClick={() => { throw new Error("Sentry test error"); }}>
+          Throw error
+        </button>
+        <button onClick={() => {
+          const value = Math.floor(Math.random() * 1000) + 1;
+          console.log("Sending metric to Sentry:", { name: "totalTimeInSeconds", value, unit: "second" });
+          Sentry.metrics.distribution("totalTimeInSeconds", value, { unit: "second" });
+        }}>
+          Record metric
+        </button>
       </header>
     </div>
   );
