@@ -54,6 +54,15 @@ function App() {
         }}>
           Record metric
         </button>
+        <button onClick={() => {
+          const value = Math.floor(Math.random() * 10001);
+          const randStr = () => Math.random().toString(36).substring(2, 8);
+          const path = `root.myRouter.video__tab.${randStr()}.${randStr()}`;
+          console.log("Sending metric to Sentry:", { name: "my_paths", value, attributes: { path } });
+          Sentry.metrics.distribution("my_paths", value, { attributes: { path } });
+        }}>
+          Record path metric
+        </button>
       </header>
     </div>
   );
